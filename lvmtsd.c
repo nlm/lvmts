@@ -97,11 +97,11 @@ queue_extents_move(struct extents *ext, struct program_params *pp,
         le_inf = get_first_LE_info(get_volume_vg(pp, lv_name),
             get_volume_lv(pp, lv_name), pv_name);
 
-        printf("First LE on %s is %li, PE: %li\n",
+        printf("First LE on %s is %llu, PE: %llu\n",
             le_inf.dev, le_inf.le, le_inf.pe);
 
         uint64_t optimal_pe = le_inf.pe + ext->extents[i]->le - le_inf.le;
-        printf("Optimal position for LE %li is PE %li\n",
+        printf("Optimal position for LE %li is PE %llu\n",
             ext->extents[i]->le, optimal_pe);
 
         struct le_info optimal;
@@ -109,25 +109,25 @@ queue_extents_move(struct extents *ext, struct program_params *pp,
             optimal_pe);
 
         if (optimal.lv_name && !strcmp(optimal.lv_name, "free")) {
-            printf("PE %li is free\n", optimal.pe);
-            snprintf(cmd, 4096, "pvmove -i1 --alloc anywhere %s:%li %s:%li "
-                "# LE: %li, score: %f\n",
-                ext->extents[i]->dev, ext->extents[i]->pe,
-                optimal.dev, optimal.pe,
-                ext->extents[i]->le, ext->extents[i]->score);
-            printf(cmd);
+            printf("PE %llu is free\n", optimal.pe);
+            snprintf(cmd, 4096, "pvmove -i1 --alloc anywhere %s:%ju %s:%ju "
+                "# LE: %ju, score: %f\n",
+                ext->extents[i]->dev, (intmax_t)ext->extents[i]->pe,
+                optimal.dev, (intmax_t)optimal.pe,
+                (intmax_t)ext->extents[i]->le, ext->extents[i]->score);
+            printf("%s", cmd);
         } else {
             if (optimal.dev == NULL)
-                printf("PE %li is above disk boundary, using default allocation\n",
+                printf("PE %llu is above disk boundary, using default allocation\n",
                     optimal_pe);
             else
-                printf("PE %li is allocated by LV %s LE %li, using default allocation\n",
+                printf("PE %llu is allocated by LV %s LE %llu, using default allocation\n",
                     optimal_pe, optimal.lv_name, optimal.le);
 retry_pvmove:
             snprintf(cmd, 4096, "pvmove -i1 --alloc anywhere %s:%li %s # LE: %li, score: %f\n", ext->extents[i]->dev,
                 ext->extents[i]->pe, get_tier_device(pp, lv_name, dst_tier),
                 ext->extents[i]->le, ext->extents[i]->score);
-            printf(cmd);
+            printf("%s", cmd);
         }
 
         ret = system(cmd);

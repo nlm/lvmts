@@ -63,14 +63,14 @@ main(int argc, char **argv)
                 optimal = get_PE_allocation(vg_name, pv_name, j);
 
                 if (optimal.dev == NULL) {
-                    printf("# Optimal position for LE %li-%li on %s is after end of "
+                    printf("# Optimal position for LE %llu-%llu on %s is after end of "
                         "the device\n",
                         pv_segments[i].lv_start,
                         pv_segments[i].lv_start + pv_segments[i].pv_length,
                         pv_name);
                     break;
                 } else if (strcmp(optimal.lv_name, "free")) {
-                    printf("# Optimal position for LE %li-%li is used by %s LE %li\n",
+                    printf("# Optimal position for LE %llu-%llu is used by %s LE %llu\n",
                         pv_segments[i].lv_start,
                         pv_segments[i].lv_start + pv_segments[i].pv_length,
                         optimal.lv_name, optimal.le);
@@ -81,7 +81,7 @@ main(int argc, char **argv)
             }
 
             if (move_extent) {
-                  printf("pvmove -i1 --alloc anywhere %s:%li-%li %s:%li-%li # LE %li (size: %li)\n",
+                  printf("pvmove -i1 --alloc anywhere %s:%llu-%llu %s:%lu-%lu # LE %llu (size: %lu)\n",
                       pv_name,
                       pv_segments[i].pv_start,
                       pv_segments[i].pv_start + move_extent - 1,

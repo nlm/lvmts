@@ -1,7 +1,7 @@
 CC=gcc
 #CFLAGS=-std=gnu99 -Wall -pthread -ggdb -lm -Os
-CFLAGS=-std=gnu99 -Wall -pthread -ggdb3 -lm -O1
-LFLAGS=-llvm2cmd -pthread -lconfuse
+CFLAGS=-std=gnu99 -Wall -pthread -ggdb3 -O1
+LFLAGS=-llvm2cmd -pthread -lconfuse -ldevmapper -ldevmapper-event -lm
 
 all: lvmtscd lvmtscat lvmls lvmtsd lvmdefrag
 

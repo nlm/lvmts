@@ -195,26 +195,26 @@ main(int argc, char **argv)
 
     if (pvmove_output) {
         if (print_le) {
-            printf("%li", bs[0].offset);
+            printf("%llu", bs[0].offset);
             for (int i=1; i< blocks; i++) {
-                printf(":%li", bs[i].offset);
+                printf(":%llu", bs[i].offset);
             }
             printf("\n");
         } else {
             struct pv_info *pvi;
             struct pv_info *pvn;
             pvi = LE_to_PE(vg_name, lv_name, bs[0].offset);
-            printf("%s:%li", pvi->pv_name, pvi->start_seg);
+            printf("%s:%llu", pvi->pv_name, pvi->start_seg);
             for (int i=1; i<blocks; i++) {
                 pvn = LE_to_PE(vg_name, lv_name, bs[i].offset);
                 if (!pvn)
                   continue;
                 if (!strcmp(pvi->pv_name, pvn->pv_name)) {
-                    printf(":%li", pvn->start_seg);
+                    printf(":%llu", pvn->start_seg);
                     pv_info_free(pvn);
                     continue;
                 } else {
-                    printf("\n%s:%li", pvn->pv_name, pvn->start_seg);
+                    printf("\n%s:%llu", pvn->pv_name, pvn->start_seg);
                     pv_info_free(pvi);
                     pvi = pvn;
                     continue;

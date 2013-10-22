@@ -288,10 +288,10 @@ void
 dump_activity_stats(struct activity_stats *activity) {
 
 	for (size_t i=0; i<activity->len; i++) {
-		printf("block %8lu, last read:  %lu, read score:  %e\n",
+		printf("block %8zu, last read: %lld, read score: %e\n",
 				i, activity->block[i].read_time,
                 activity->block[i].read_score);
-        printf("block %8lu, last write: %lu, write score: %e\n",
+        printf("block %8zu, last write: %lld, write score: %e\n",
 				i, activity->block[i].write_time,
                 activity->block[i].write_score);
 	}
@@ -564,7 +564,7 @@ void
 print_block_scores(struct block_scores *bs, size_t size)
 {
   for(size_t i=0; i<size; i++)
-    printf("block %10li score: %8f\n", bs[i].offset, bs[i].score);
+    printf("block %10llu score: %8f\n", bs[i].offset, bs[i].score);
 }
 
 /**

@@ -555,7 +555,7 @@ int main(int argc, char **argv)
 
     for(int i=0; i < pv_segments_num; i++)
         if(!strcmp(pv_segments[i].lv_name, argv[1]))
-            printf("%s %li-%li (%li-%li)\n", pv_segments[i].pv_name,
+            printf("%s %llu-%llu (%llu-%llu)\n", pv_segments[i].pv_name,
                 pv_segments[i].pv_start,
                 pv_segments[i].pv_start+pv_segments[i].pv_length,
                 pv_segments[i].lv_start,
@@ -566,22 +566,22 @@ int main(int argc, char **argv)
     struct pv_info *pv_info;
     pv_info = LE_to_PE(argv[1], argv[2], atoi(argv[3]));
     if (pv_info)
-        printf("LE no %i of %s-%s is at: %s:%li\n", atoi(argv[3]), argv[1], argv[2],
+        printf("LE no %i of %s-%s is at: %s:%llu\n", atoi(argv[3]), argv[1], argv[2],
             pv_info->pv_name, pv_info->start_seg);
     else
         printf("no LE found\n");
 
-    printf("vg: %s, extent size: %lu bytes\n", argv[1], get_pe_size(argv[1]));
+    printf("vg: %s, extent size: %llu bytes\n", argv[1], get_pe_size(argv[1]));
 
     long int free_extents = get_free_extent_number(argv[1], pv_info->pv_name);
-    printf("vg: %s, pv: %s, free space: %lue (%luB)\n", argv[1],
+    printf("vg: %s, pv: %s, free space: %lue (%lluB)\n", argv[1],
         pv_info->pv_name,
         free_extents,
         free_extents * get_pe_size(argv[1]));
 
     long int used_extents = get_used_space_on_pv(argv[1], argv[2],
         pv_info->pv_name);
-    printf("Space used by lv %s on pv %s: %lue (%luB)\n",
+    printf("Space used by lv %s on pv %s: %lue (%lluB)\n",
         argv[2],
         pv_info->pv_name,
         used_extents,
@@ -591,7 +591,7 @@ int main(int argc, char **argv)
 
     le_inf = get_first_LE_info(argv[1], argv[2], pv_info->pv_name);
 
-    printf("First LE on %s is %li at PE %li\n",
+    printf("First LE on %s is %llu at PE %llu\n",
         le_inf.dev, le_inf.le, le_inf.pe);
 
     long int optimal_pe = le_inf.pe + atoi(argv[3]) - le_inf.le;
@@ -612,7 +612,7 @@ int main(int argc, char **argv)
         else if (!strcmp(optimal.lv_name, "free"))
             printf("free\n");
         else
-            printf("allocated to %s, LE: %li\n", optimal.lv_name, optimal.le);
+            printf("allocated to %s, LE: %llu\n", optimal.lv_name, optimal.le);
 
     }
 
